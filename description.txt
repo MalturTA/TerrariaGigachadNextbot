@@ -1,0 +1,11 @@
+Gigachad Nextbot is a pretty shitty port of Nextbot NPC from GMod.
+
+Package includes:
+-Gigachad Nextbot;
+-Nextbot summon item;
+-Insanity;
+-Bad code;
+-Prostate cancer;
+-Testicular torsion.
+
+Some time later i will include link to source code base, so anyone could do their own Nextbot!
