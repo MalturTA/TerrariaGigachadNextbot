@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -62,23 +63,31 @@ namespace TerrariaNextbot.NPCs
 		// private SlotId soundId;
 		public override void OnSpawn(IEntitySource source)
 		{
-			// Mod ambianceLib = ModLoader.GetMod("TerrariaAmbienceAPI");
-			if (ambianceLib != null && false) // Adding false, until i figure out how to make it work.
-			{ // Try using AmbienceAPI
-				// I don't know how to do it properly, i'm too new to dependency management in tModLoader.
-				
-				// There must be boolean "playWhen" function, to make it work.
-				// Passing "true" does not work. Easy way failed miserably!
-				ambianceLib.Call($"{nameof(TerrariaNextbot)}/SFX/Gigachad",0.9f,0.1f,true);
-			}
-			else
+			if(ModContent.GetInstance<Config>().EnableAudio)
 			{
-				var sound = new SoundStyle($"{nameof(TerrariaNextbot)}/SFX/Gigachad") with
+				// Try using AmbienceAPI
+				if (ambianceLib != null && false) // Adding false, until i figure out how to make it work.
 				{
-					Volume = 0.9f,
-					MaxInstances = 1
-				};
-				SoundEngine.PlaySound(sound);
+					Mod ambianceLib = ModLoader.GetMod("TerrariaAmbienceAPI");
+					
+					// I don't know how to do it properly, i'm too new to dependency management in tModLoader.
+
+					// There must be boolean "playWhen" function, to make it work.
+					// Passing "true" does not work. Easy way failed miserably!
+
+					// Argument order: Path (string), Max Volume (float), Volume Step (float), Playing Parameters (Func<Bool>)
+					ambianceLib.Call($"{nameof(TerrariaNextbot)}/SFX/Gigachad", 0.9f, 0.1f, true);
+					// ambianceLib.Call($"{nameof(TerrariaNextbot)}/SFX/Gigachad",0.9f,0.1f,new Func<bool>(() => /*something that would make it work*/));
+				}
+				else
+				{
+					var sound = new SoundStyle($"{nameof(TerrariaNextbot)}/SFX/Gigachad") with
+					{
+						Volume = ModContent.GetInstance<Config>().SoundVolume,
+						MaxInstances = 3
+					};
+					SoundEngine.PlaySound(sound);
+				}
 			}
 			base.OnSpawn(source);
 		}
@@ -86,7 +95,7 @@ namespace TerrariaNextbot.NPCs
 		public override void OnKill()
 		{
 			// var snd = SoundEngine.TryGetActiveSound(default, out result);
-			SoundEngine.SoundPlayer.StopAll();
+			if(ModContent.GetInstance<Config>().EnableAudio) SoundEngine.SoundPlayer.StopAll();
 		
 			base.OnKill();
 		}
@@ -94,7 +103,6 @@ namespace TerrariaNextbot.NPCs
 		private int time = 0;
 		public override void AI()
 		{
-			time++;
 			Player target = Main.player[NPC.target];
 			Vector2 toPlayer = NPC.DirectionTo(target.Center) * 5;//Get the direction to the player.
 			
@@ -117,24 +125,28 @@ namespace TerrariaNextbot.NPCs
 			* So, any help is appreciated.
 			*/
 
-			// ambianceLib.Call($"{nameof(TerrariaNextbot)}/SFX/Gigachad",0.9f,0.1f,true);
-			
-			if (time >= 13680) // Play sound, after finishing last one
+			if(ModContent.GetInstance<Config>().EnableAudio)
 			{
-				time = 0; // Reset time upon reaching end of the sound.
-				var sound = new SoundStyle($"{nameof(TerrariaNextbot)}/SFX/Gigachad") with
+				time++;
+				// ambianceLib.Call($"{nameof(TerrariaNextbot)}/SFX/Gigachad",0.9f,0.1f,true);
+				if (time >= 13680) // Play sound, after finishing last one
 				{
-					Volume = 0.9f,
-					MaxInstances = 1
-				};
-				SoundEngine.PlaySound(sound);
+					time = 0; // Reset time upon reaching end of the sound.
+					var sound = new SoundStyle($"{nameof(TerrariaNextbot)}/SFX/Gigachad") with
+					{
+						Volume = ModContent.GetInstance<Config>().SoundVolume,
+						MaxInstances = 3
+					};
+					SoundEngine.PlaySound(sound);
+				}
 			}
 			base.AI();
 		}
 		
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
-			// return SpawnCondition.OverworldNightMonster.Chance * 0.2f; // Spawn with 1/5th the chance of a regular zombie.
-			return 0.1f;
+			// return 0.1f;
+			if (ModContent.GetInstance<Config>().SpawnNaturally) return ModContent.GetInstance<Config>().SpawnChance;
+			return 0;
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
