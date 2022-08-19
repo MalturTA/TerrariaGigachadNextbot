@@ -11,7 +11,7 @@ namespace TerrariaNextbot.NPCs
 {
 	public class Gigachad : ModNPC
 	{
-		Mod ambianceLib = ModLoader.GetMod("TerrariaAmbienceAPI");
+		private Mod ambianceLib = null;//ModLoader.GetMod("TerrariaAmbienceAPI");
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Gigachad");
 
@@ -68,7 +68,7 @@ namespace TerrariaNextbot.NPCs
 				// Try using AmbienceAPI
 				if (ambianceLib != null && false) // Adding false, until i figure out how to make it work.
 				{
-					Mod ambianceLib = ModLoader.GetMod("TerrariaAmbienceAPI");
+					// Mod ambianceLib = ModLoader.GetMod("TerrariaAmbienceAPI");
 					
 					// I don't know how to do it properly, i'm too new to dependency management in tModLoader.
 
