@@ -3,6 +3,13 @@
 Seriously, it is mod, that adds png image, that follows you and does a lot of damage on contact.
 
 ---
+## General information
+
+You can get stable version of the mod on the [steam workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=2827392367),
+ or alternatively, download from [the releases tab](https://github.com/MalturTA/TerrariaGigachadNextbot/releases).
+
+If you want latest and greatest changes, follow instructions below. But beware, that it may be unstable,
+cause data loss, and generally unpleasant experience.
 
 ## Instructions
 
