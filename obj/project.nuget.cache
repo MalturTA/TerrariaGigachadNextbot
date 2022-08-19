@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "I+DxDsjEgT6oAvXeBep+srbRiekjFhVYbf9Ec5nyqL38Q9n+pfx4n3y6AnLVaNRzbpvMyupOjO+/ArJU+yNJjw==",
+  "success": true,
+  "projectFilePath": "/home/oswald/.local/share/Terraria/tModLoader/ModSources/TerrariaNextbot/TerrariaNextbot.csproj",
+  "expectedPackageFiles": [
+    "/home/oswald/.nuget/packages/tmodloader.codeassist/0.1.5/tmodloader.codeassist.0.1.5.nupkg.sha512",
+    "/home/oswald/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.8/microsoft.aspnetcore.app.ref.6.0.8.nupkg.sha512"
+  ],
+  "logs": []
+}

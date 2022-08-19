@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\tModLoader.targets" />
+  <PropertyGroup>
+    <AssemblyName>TerrariaNextbot</AssemblyName>
+    <TargetFramework>net6.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SFX" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="TerrariaAmbienceAPI">
+      <HintPath>..\..\..\..\..\..\..\..\media\Safe-Data\sda2-expander\tModLoader\ModSources\TerrariaNextbot\TerrariaAmbienceAPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -8,9 +8,9 @@ using Terraria.ModLoader;
 
 namespace TerrariaNextbot.NPCs
 {
-	// Party Zombie is a pretty basic clone of a vanilla NPC. To learn how to further adapt vanilla NPC behaviors, see https://github.com/tModLoader/tModLoader/wiki/Advanced-Vanilla-Code-Adaption#example-npc-npc-clone-with-modified-projectile-hoplite
 	public class Gigachad : ModNPC
 	{
+		Mod ambianceLib = ModLoader.GetMod("TerrariaAmbienceAPI");
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Gigachad");
 
@@ -46,7 +46,7 @@ namespace TerrariaNextbot.NPCs
 			NPC.noTileCollide = true;
 			NPC.ModNPC.Music = 5; //This is correct, but legacy way to set music. NOT WORKING.
 			
-			// AIType = NPCID.MeteorHead; // Use vanilla zombie's type when executing AI code. (This also means it will try to despawn during daytime)
+			// AIType = NPCID.MeteorHead; 
 			AIType = -1;
 			// AnimationType = NPCID.MeteorHead; // Use vanilla zombie's type when executing animation code. Important to also match Main.npcFrameCount[NPC.type] in SetStaticDefaults.
 			// Banner = Item.NPCtoBanner(NPCID.Zombie); // Makes this NPC get affected by the normal zombie banner.
@@ -62,12 +62,24 @@ namespace TerrariaNextbot.NPCs
 		// private SlotId soundId;
 		public override void OnSpawn(IEntitySource source)
 		{
-			var sound = new SoundStyle($"{nameof(TerrariaNextbot)}/SFX/Gigachad") with
+			// Mod ambianceLib = ModLoader.GetMod("TerrariaAmbienceAPI");
+			if (ambianceLib != null && false) // Adding false, until i figure out how to make it work.
+			{ // Try using AmbienceAPI
+				// I don't know how to do it properly, i'm too new to dependency management in tModLoader.
+				
+				// There must be boolean "playWhen" function, to make it work.
+				// Passing "true" does not work. Easy way failed miserably!
+				ambianceLib.Call($"{nameof(TerrariaNextbot)}/SFX/Gigachad",0.9f,0.1f,true);
+			}
+			else
 			{
-				Volume = 0.9f,
-				MaxInstances = 1
-			};
-			SoundEngine.PlaySound(sound);
+				var sound = new SoundStyle($"{nameof(TerrariaNextbot)}/SFX/Gigachad") with
+				{
+					Volume = 0.9f,
+					MaxInstances = 1
+				};
+				SoundEngine.PlaySound(sound);
+			}
 			base.OnSpawn(source);
 		}
 
@@ -105,9 +117,11 @@ namespace TerrariaNextbot.NPCs
 			* So, any help is appreciated.
 			*/
 
-			if (time >= 13680) // Play sound, after finishing last oneGig NextbotIt does NextbotSummoner31
+			// ambianceLib.Call($"{nameof(TerrariaNextbot)}/SFX/Gigachad",0.9f,0.1f,true);
+			
+			if (time >= 13680) // Play sound, after finishing last one
 			{
-				time = 0; // Reset time just in case overflow.
+				time = 0; // Reset time upon reaching end of the sound.
 				var sound = new SoundStyle($"{nameof(TerrariaNextbot)}/SFX/Gigachad") with
 				{
 					Volume = 0.9f,
@@ -127,10 +141,10 @@ namespace TerrariaNextbot.NPCs
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				// Sets the spawning conditions of this NPC that is listed in the bestiary.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
+				// BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times.NightTime,
 
 				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("This type of zombie for some reason really likes to spread confetti around. Otherwise, it behaves just like a normal zombie.")
+				new FlavorTextBestiaryInfoElement("This is what peak-performance male body looks like.")
 			});
 		}
 
