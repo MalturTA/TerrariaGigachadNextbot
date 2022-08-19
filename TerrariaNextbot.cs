@@ -2,9 +2,15 @@ using System.ComponentModel;
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using On.Terraria;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
+using TerrariaNextbot.NPCs;
+using Main = Terraria.Main;
+using NetMessage = Terraria.NetMessage;
+using NPC = Terraria.NPC;
+using Player = Terraria.Player;
 
 namespace TerrariaNextbot
 {
@@ -52,4 +58,26 @@ namespace TerrariaNextbot
 		[Tooltip("How loud music from Nextbot will be\nDefault Value: 0.9")]
 		public float SoundVolume;
 
-	}}
+	}
+
+	public class NextbotPlayer : ModPlayer
+	{
+		public override void OnRespawn(Player player)
+		{
+			if (ModContent.GetInstance<Config>().SpawnWithPlayer)
+			{
+				if (Main.netMode != NetmodeID.MultiplayerClient) 
+				{
+					// If the player is not in multiplayer, spawn directly
+					NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<Gigachad>());
+				}
+				else 
+				{
+					// If the player is in multiplayer, request a spawn
+					NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: ModContent.NPCType<Gigachad>());
+				}
+			}
+			base.OnRespawn(player);
+		}
+	}
+}
